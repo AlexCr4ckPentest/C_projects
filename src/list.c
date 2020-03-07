@@ -34,6 +34,7 @@ void list_delete(list_t *list)
 {
     list_clear(list);
     free(list);
+    list = NULL;
 }
 
 void list_clear(list_t *list)

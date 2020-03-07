@@ -15,8 +15,8 @@ string_t* str_dup(const string_t *str);
 void str_catc(string_t *dst, const char *src);
 void str_cat(string_t *dst, const string_t *src);
 
-void str_cpyc(string_t *dst, const char *src);
-void str_cpy(string_t *dst, const string_t *src);
+extern void str_cpyc(string_t *dst, const char *src);
+extern void str_cpy(string_t *dst, const string_t *src);
 
 uint8_t str_cmpc(const string_t *str_l, const char *str_r);
 extern uint8_t str_cmp(const string_t *str_l, const string_t *str_r);
