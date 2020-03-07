@@ -107,7 +107,7 @@ void* list_at(list_t *list, const size_t index)
 {
     assert(index < list->size);
 
-    size_t curr_node_index = 0; 
+    size_t curr_node_index = 0;
     list_node_t *curr_node = list->head;
     while (curr_node != NULL) {
         if (index == curr_node_index) {
@@ -128,6 +128,7 @@ inline uint8_t list_is_empty(const list_t *list)
     return list->size == 0;
 }
 
+#ifdef DEBUG
 void list_print(list_t *list, const char *format, FILE *out)
 {
     assert(list->head != NULL);
@@ -138,3 +139,4 @@ void list_print(list_t *list, const char *format, FILE *out)
         node = node->next;
     }
 }
+#endif // DEBUG

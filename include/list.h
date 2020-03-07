@@ -30,6 +30,8 @@ extern size_t list_size(const list_t *list);
 
 extern uint8_t list_is_empty(const list_t *list);
 
+#ifdef DEBUG
 void list_print(list_t *list, const char *format, FILE *out);
+#endif // DEBUG
 
 #endif // _LIST_H_

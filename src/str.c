@@ -78,7 +78,8 @@ void str_cat(string_t *dst, const string_t *src)
 void str_cpyc(string_t *dst, const char *src)
 {
     size_t src_len = strlen(src);
-    memcpy(dst->data, src, src_len);
+    memcpy(dst->data, src, src_len + 1);
+    *(dst->data + src_len) = 0;
     dst->length = src_len;
 }
 
