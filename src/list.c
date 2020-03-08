@@ -158,3 +158,10 @@ void list_print(list_t *list, const char *format, FILE *out)
         node = node->next;
     }
 }
+
+void list_reverse(list_t *list)
+{
+    assert(list->size != 0);
+
+    // https://www.geeksforgeeks.org/reverse-a-linked-list/
+}

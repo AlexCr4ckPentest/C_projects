@@ -31,4 +31,6 @@ extern uint8_t list_is_empty(const list_t *list);
 
 void list_print(list_t *list, const char *format, FILE *out);
 
+void list_reverse(list_t *list);
+
 #endif // _LIST_H_
