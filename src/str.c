@@ -15,7 +15,7 @@ string_t* str_create(const size_t length)
     string_t *new_string = malloc(sizeof(string_t));
 
     new_string->data = malloc(length * sizeof(char));
-    *(new_string->data) = NULL;
+    *(new_string->data) = 0;
     new_string->length = 0;
 
     return new_string;
@@ -53,7 +53,6 @@ void str_catc(string_t *dst, const char *src)
 {
     assert(str_cmpc(dst, src) != 0);
 
-    size_t src_len = strlen(src);
     char *new_dst_data = dst->data;
     while (*new_dst_data) {
         new_dst_data++;
