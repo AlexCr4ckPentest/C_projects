@@ -23,8 +23,6 @@ void list_pop_front(list_t *list);
 void list_insert(list_t *list, void *data, const size_t index);
 
 void* list_at(list_t *list, const size_t index);
-void* list_first(list_t *list);
-void* list_last(list_t *list);
 
 extern size_t list_size(const list_t *list);
 
