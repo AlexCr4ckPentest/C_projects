@@ -87,6 +87,25 @@ void list_pop_front(list_t *list)
     list->size--;
 }
 
+void list_remove_at(list_t *list, const size_t index)
+{
+    assert(index < list->size);
+
+    if (index == 0) {
+        list_pop_front(list);
+    }
+    else {
+        list_node_t *prev_node = list->head;
+        for (size_t i = 0; i < index - 1; i++) {
+            prev_node = prev_node->next;
+        }
+        list_node_t *node_for_delete = prev_node->next;
+        prev_node->next = node_for_delete->next;
+        free(node_for_delete);
+        list->size--;
+    }
+}
+
 void list_insert(list_t *list, void *data, const size_t index)
 {
     assert(index < list->size);
@@ -129,7 +148,6 @@ inline uint8_t list_is_empty(const list_t *list)
     return list->size == 0;
 }
 
-#ifdef DEBUG
 void list_print(list_t *list, const char *format, FILE *out)
 {
     assert(list->head != NULL);
@@ -140,4 +158,3 @@ void list_print(list_t *list, const char *format, FILE *out)
         node = node->next;
     }
 }
-#endif // DEBUG
