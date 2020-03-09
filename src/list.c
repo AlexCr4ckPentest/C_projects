@@ -163,5 +163,15 @@ void list_reverse(list_t *list)
 {
     assert(list->size != 0);
 
-    // https://www.geeksforgeeks.org/reverse-a-linked-list/
+    list_node_t *prev = NULL;
+    list_node_t *curr = list->head;
+    list_node_t *next = NULL;
+
+    while (curr != NULL) {
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    list->head = prev;
 }
