@@ -16,6 +16,6 @@ target: $(SOURCES)
 	$(CC) $(OBJ) $(SOURCES) $(CC_FLAGS)
 	$(CC) $(OBJECTS) -o $(TARGET)
 
-clean: $(TARGET) $(OBJECTS)
+clean:
 	rm $(OBJECTS)
 	rm $(TARGET)
