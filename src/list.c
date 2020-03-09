@@ -2,6 +2,14 @@
 #include <stdlib.h>
 #include <assert.h>
 
+static void assert_throw_error(int expr, const char *e_msg, int e_code)
+{
+    if (!expr) {
+        fprintf(stderr, "%s", e_msg);
+        exit(e_code);
+    }
+}
+
 typedef struct s_list_node
 {
     void *data;
@@ -67,7 +75,8 @@ void list_push_front(list_t *list, void *data)
 
 void list_pop_back(list_t *list)
 {
-    assert(list->size != 0);
+    // assert(list->size != 0);
+    assert_throw_error(list->size != 0, "list_pop_back(): assertation failed: list size is 0!\n", 1);
 
     list_node_t *node_for_delete = list->head;
     while (node_for_delete->next != NULL) {
@@ -79,8 +88,9 @@ void list_pop_back(list_t *list)
 
 void list_pop_front(list_t *list)
 {
-    assert(list->head != NULL);
-
+    // assert(list->head != NULL);
+    assert_throw_error(list->size != 0, "list_pop_front(): assertation failed: list size is 0!\n", 1);
+    
     list_node_t *node_for_delete = list->head;
     list->head = list->head->next;
     free(node_for_delete);
@@ -89,7 +99,9 @@ void list_pop_front(list_t *list)
 
 void list_remove_at(list_t *list, const size_t index)
 {
-    assert(index < list->size);
+    // assert(index < list->size);
+    assert_throw_error(list->size != 0, "list_remove_at(): assertation failed: list size is 0!\n", 1);
+    assert_throw_error(index < list->size, "list_remove_at(): assertation failed: index out of range!\n", 2);
 
     if (index == 0) {
         list_pop_front(list);
@@ -108,7 +120,8 @@ void list_remove_at(list_t *list, const size_t index)
 
 void list_insert(list_t *list, void *data, const size_t index)
 {
-    assert(index < list->size);
+    // assert(index < list->size);
+    assert_throw_error(index < list->size, "list_insert(): assertation failed: index out of range!\n", 2);
 
     if (index == 0) {
         list_push_front(list, data);
@@ -125,7 +138,9 @@ void list_insert(list_t *list, void *data, const size_t index)
 
 void* list_at(list_t *list, const size_t index)
 {
-    assert(index < list->size);
+    // assert(index < list->size);
+    assert_throw_error(list->size != 0, "list_at(): assertation failed: list size is 0!\n", 1);
+    assert_throw_error(index < list->size, "list_at(): assertation failed: index out of range!\n", 2);
 
     size_t curr_node_index = 0;
     list_node_t *curr_node = list->head;
@@ -150,7 +165,8 @@ inline uint8_t list_is_empty(const list_t *list)
 
 void list_print(list_t *list, const char *format, FILE *out)
 {
-    assert(list->head != NULL);
+    // assert(list->head != NULL);
+    assert_throw_error(list->head != NULL, "list_print(): assertation failed: list size is 0!\n", 1);
 
     list_node_t *node = list->head;
     while (node != NULL) {
@@ -161,7 +177,8 @@ void list_print(list_t *list, const char *format, FILE *out)
 
 void list_reverse(list_t *list)
 {
-    assert(list->size != 0);
+    // assert(list->size != 0);
+    assert_throw_error(list->size != 0, "list_reverse(): assertation failed: list size is 0!\n", 1);
 
     list_node_t *prev = NULL;
     list_node_t *curr = list->head;
