@@ -6,8 +6,9 @@
 
 typedef struct string
 {
-    char *data;
-    size_t length;
+    char *data;     // pointer to C-string
+    char *p_end;    // pointer to end of string
+    size_t length;  // current length of string
 } string_t;
 
 string_t* str_create(const size_t length)
@@ -16,6 +17,8 @@ string_t* str_create(const size_t length)
 
     new_string->data = malloc(length * sizeof(char));
     *(new_string->data) = 0;
+
+    new_string->p_end = new_string->data;
     new_string->length = 0;
 
     return new_string;
@@ -34,43 +37,49 @@ string_t* str_dupc(const char *str)
     string_t *dup = str_create(str_len);
 
     memcpy(dup->data, str, str_len + 1);
+    dup->p_end = (dup->data + str_len + 1);
     dup->length = str_len;
-
+    
     return dup;
 }
 
 string_t* str_dup(const string_t *str)
 {
-    string_t *dup = str_create(str->length);
-
-    memcpy(dup->data, str->data, str->length + 1);
-    dup->length = str->length;
-
+    string_t *dup = str_dupc(str->data);
     return dup;
 }
 
 void str_catc(string_t *dst, const char *src)
 {
-    assert(str_cmpc(dst, src) != 0);
+    char *new_dst_data = dst->p_end;
 
-    char *new_dst_data = dst->data;
-    while (*new_dst_data) {
-        new_dst_data++;
-    }
     while (*new_dst_data++ = *src++);
-    *new_dst_data = 0;
+
+    *new_dst_data = '\0';
+    dst->p_end = new_dst_data;
 }
 
-inline void str_cat(string_t *dst, const string_t *src)
+void str_cat(string_t *dst, const string_t *src)
 {
-    str_catc(dst, src->data);
+    char *new_dst_data = dst->p_end;
+    char *src_copy_secure;
+
+    memcpy(src_copy_secure, src->data, src->length + 1);
+
+    while (*new_dst_data++ = *src_copy_secure++);
+
+    *new_dst_data = '\0';
+    dst->p_end = new_dst_data;
 }
 
 void str_cpyc(string_t *dst, const char *src)
 {
     size_t src_len = strlen(src);
-    memcpy(dst->data, src, src_len + 1);
-    *(dst->data + src_len) = 0;
+    memcpy(dst->data, src, src_len);
+
+    *(dst->data + src_len) = '\0';
+    
+    dst->p_end = dst->data + src_len;
     dst->length = src_len;
 }
 
@@ -110,7 +119,7 @@ inline char* str_to_c_str(const string_t *str)
 
 uint16_t str_chr_pos(const string_t *str, const char chr)
 {
-    uint16_t chr_pos = 0;
+    size_t chr_pos = 0;
     char *str_data = str->data;
 
     while (*str_data) {
