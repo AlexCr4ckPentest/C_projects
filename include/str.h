@@ -9,6 +9,8 @@ typedef struct string string_t;
 string_t* str_create(const size_t length);
 void str_delete(string_t *str);
 
+string_t* str_from_c_str(const char *str);
+
 string_t* str_dupc(const char *str);
 string_t* str_dup(const string_t *str);
 

@@ -31,6 +31,13 @@ void str_delete(string_t *str)
     str = NULL;
 }
 
+string_t* str_from_c_str(const char *str)
+{
+    string_t *new_str = str_create(strlen(str));
+    str_cpyc(new_str, str);
+    return new_str;
+}
+
 string_t* str_dupc(const char *str)
 {
     size_t str_len = strlen(str);
