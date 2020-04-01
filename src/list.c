@@ -1,6 +1,5 @@
 #include "../include/list.h"
 #include <stdlib.h>
-#include <assert.h>
 
 static void assert_throw_error(int expr, const char *e_msg, int e_code)
 {
