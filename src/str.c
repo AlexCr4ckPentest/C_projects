@@ -11,7 +11,7 @@ typedef struct string
     size_t length;  // current length of string
 } string_t;
 
-string_t* str_create(const size_t length)
+string_t* __str_create(const size_t length)
 {
     string_t *new_string = malloc(sizeof(string_t));
 
@@ -33,7 +33,7 @@ void str_delete(string_t *str)
 
 string_t* str_from_c_str(const char *str)
 {
-    string_t *new_str = str_create(strlen(str));
+    string_t *new_str = __str_create(strlen(str));
     str_cpyc(new_str, str);
     return new_str;
 }
@@ -41,7 +41,7 @@ string_t* str_from_c_str(const char *str)
 string_t* str_dupc(const char *str)
 {
     size_t str_len = strlen(str);
-    string_t *dup = str_create(str_len);
+    string_t *dup = __str_create(str_len);
 
     memcpy(dup->data, str, str_len + 1);
     dup->p_end = (dup->data + str_len + 1);
@@ -124,7 +124,7 @@ inline char* str_to_c_str(const string_t *str)
     return str->data;
 }
 
-uint16_t str_chr_pos(const string_t *str, const char chr)
+size_t str_chr_pos(const string_t *str, const char chr)
 {
     size_t chr_pos = 0;
     char *str_data = str->data;
@@ -152,14 +152,4 @@ void str_reverse(const string_t *str)
         str->data[i] = str->data[j];
         str->data[j] = tmp;
     }
-}
-
-inline int str_print(FILE *out_stream, const string_t *str)
-{
-    return (fprintf(out_stream, "%s", str->data));
-}
-
-inline int str_println(FILE *out_stream, const string_t *str)
-{
-    return (fprintf(out_stream, "%s\n", str->data));
 }
