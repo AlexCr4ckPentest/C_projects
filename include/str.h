@@ -27,7 +27,7 @@ extern size_t str_length(const string_t *str);
 
 extern char* str_to_c_str(const string_t *str);
 
-uint16_t str_chr_pos(const string_t *str, const char chr);
+size_t str_chr_pos(const string_t *str, const char chr);
 extern char* str_chr_ptr(const string_t *str, const char chr);
 void str_reverse(const string_t *str);
 
