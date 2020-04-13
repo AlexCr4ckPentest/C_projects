@@ -11,7 +11,7 @@ typedef struct string
     size_t length;  // current length of string
 } string_t;
 
-string_t* __str_create(const size_t length)
+static string_t* __str_create(const size_t length)
 {
     string_t *new_string = malloc(sizeof(string_t));
 
@@ -64,54 +64,65 @@ void str_catc(string_t *dst, const char *src)
 
     *new_dst_data = '\0';
     dst->p_end = new_dst_data;
+
+    dst->length += strlen(src);
 }
 
 void str_cat(string_t *dst, const string_t *src)
 {
-    char *new_dst_data = dst->p_end;
-    char *src_copy_secure;
+    size_t src_len = src->length;
+    size_t how_much = dst->length + src_len;
 
-    memcpy(src_copy_secure, src->data, src->length + 1);
+    dst->data = (char*) realloc(dst->data, how_much + 1);
+    memmove(dst->data + src_len, src->data, src_len + 1);
 
-    while (*new_dst_data++ = *src_copy_secure++);
-
-    *new_dst_data = '\0';
-    dst->p_end = new_dst_data;
+    dst->p_end = (dst->p_end + src_len + 1);
+    dst->length += src_len;
 }
 
 void str_cpyc(string_t *dst, const char *src)
 {
     size_t src_len = strlen(src);
-    memcpy(dst->data, src, src_len);
+    memcpy(dst->data, src, src_len + 1);
 
-    *(dst->data + src_len) = '\0';
-    
     dst->p_end = dst->data + src_len;
     dst->length = src_len;
 }
 
-inline void str_cpy(string_t *dst, const string_t *src)
+void str_cpy(string_t *dst, const string_t *src)
 {
-    str_cpyc(dst, src->data);
+    size_t src_len = src->length;
+    memcpy(dst->data, src->data, src_len + 1);
+
+    dst->p_end = dst->data + src_len;
+    dst->length = src_len;
 }
 
 uint8_t str_cmpc(const string_t *str_l, const char *str_r)
 {
     if (str_l->length != strlen(str_r))
         return 1;
+
     char *data_str_l = str_l->data;
-    while (*data_str_l) {
-        if (*data_str_l != *str_r)
+    
+    while (*data_str_l)
+        if (*data_str_l++ != *str_r++)
             return 1;
-        data_str_l++;
-        str_r++;
-    }
     return 0;
 }
 
-inline uint8_t str_cmp(const string_t *str_l, const string_t *str_r)
+uint8_t str_cmp(const string_t *str_l, const string_t *str_r)
 {
-    return (str_cmpc(str_l, str_r->data));
+    if (str_l->length != str_r->length)
+        return 1;
+    
+    char *data_str_l = str_l->data,
+         *data_str_r = str_r->data;
+
+    while (*data_str_l)
+        if (*data_str_l++ != *data_str_r++)
+            return 1;
+    return 0;
 }
 
 inline size_t str_length(const string_t *str)
