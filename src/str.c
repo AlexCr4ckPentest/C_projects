@@ -1,7 +1,6 @@
 #include "../include/str.h"
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
 
 typedef struct string
 {
@@ -140,9 +139,8 @@ size_t str_chr_pos(const string_t *str, const char chr)
     char *str_data = str->data;
 
     while (*str_data) {
-        if (*str_data == chr)
+        if (*str_data++ == chr)
             break;
-        str_data++;
         chr_pos++;
     }
 
