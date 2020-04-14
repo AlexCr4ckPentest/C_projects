@@ -3,50 +3,38 @@
 
 #include "include/str.h"
 #include "include/list.h"
+#include "include/stack.h"
 
-#define LIST_SIZE 3
+/* TODO:
+ * Make the test-cases for:
+ *  1) string
+ *  2) list
+ *  3) stack (done)
+*/
 
-/* Test of list */
-void test_1(void)
+void stack_test_case(void)
 {
-    list_t *list = list_create();
-    printf("test_1(): list created\n");
+    stack_t *stack = stack_create();
+    printf("stack_test_case(): stack created!, stack size: %d\n", stack_size(stack));
 
-    for (int i = 0; i < LIST_SIZE; i++) {
-        int expr = i * (i + i * 3);
-        list_push_back(list, expr);
-        printf("test_1(): push back: data=%d; list_size=%d\n", expr, list_size(list));
-    }
+    stack_push(stack, 100);
+    printf("stack_test_case(): pushing %d, stack size: %d\n", 100, stack_size(stack));
+    stack_push(stack, 555);
+    printf("stack_test_case(): pushing %d, stack size: %d\n", 500, stack_size(stack));
+    
 
-    list_print(list, "data=%d\n", stdout);
+    printf("stack_test_case(): stack top: %d\n", (int)stack_top(stack));
 
-    list_delete(list);
-    printf("test_1(): list deleted\n");
-}
+    stack_pop(stack);
+    printf("stack_test_case(): pop() called! stack size: %d\n", stack_size(stack));
 
-/* Test of string */
-void test_2(void)
-{
-    string_t *str = str_from_c_str("Hello world!");
-    printf("test_2(): string created: length = %d\n", str_length(str));
+    printf("stack_test_case(): stack top: %d\n", (int)stack_top(stack));
 
-    printf("test_2(): string data = %s\n", str_to_c_str(str));
-
-    char *ptr_found = str_chr_ptr(str, 'w');
-    char *ptr_not_found = str_chr_ptr(str, 'x');
-
-    assert(*ptr_found != '\0');
-    printf("test_2(): ptr_found data = %s\n", ptr_found);
-
-    assert(*ptr_not_found == '\0');
-    printf("test_2(): ptr_not_found data = %d\n", *ptr_not_found);
-
-    str_delete(str);
-    printf("test_2(): string deleted\n");
+    stack_delete(stack);
 }
 
 int main(void)
 {
-    test_2();
+    stack_test_case();
     return 0;
 }
