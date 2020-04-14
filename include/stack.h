@@ -15,7 +15,7 @@ extern void* stack_top(stack_t *stack);
 
 extern void stack_clear(stack_t *stack);
 
-extern uint8_t is_empty(stack_t *stack);
+extern uint8_t stack_is_empty(stack_t *stack);
 extern size_t stack_size(stack_t *stack);
 
 #endif // _STACK_H_

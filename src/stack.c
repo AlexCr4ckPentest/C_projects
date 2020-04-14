@@ -1,6 +1,5 @@
 #include "../include/stack.h"
 #include <stdlib.h>
-#include <assert.h>
 
 stack_t* stack_create(void)
 {
@@ -20,10 +19,25 @@ inline void stack_push(stack_t *stack, void *data)
 
 inline void stack_pop(stack_t *stack)
 {
-    list_pop_front(list);
+    list_pop_front(stack);
 }
 
 inline void* stack_top(stack_t *stack)
 {
-    return stack->head->data;
+    return list_first(stack);
+}
+
+inline void stack_clear(stack_t *stack)
+{
+    list_clear(stack);
+}
+
+inline uint8_t stack_is_empty(stack_t *stack)
+{
+    return list_is_empty(stack);
+}
+
+inline size_t stack_size(stack_t *stack)
+{
+    return list_size(stack);
 }
