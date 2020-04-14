@@ -33,6 +33,12 @@ void stack_test_case(void)
     stack_delete(stack);
 }
 
+void list_test_case(void)
+{}
+
+void string_test_case(void)
+{}
+
 int main(void)
 {
     stack_test_case();
