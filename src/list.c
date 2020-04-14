@@ -151,7 +151,7 @@ void* list_at(list_t *list, const size_t index)
         return list_last(list);
     }
     else if (index == 0) {
-        return list_first();
+        return list_first(list);
     }
 
     size_t curr_node_index = 0;
