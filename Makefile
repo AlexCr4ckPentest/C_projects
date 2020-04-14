@@ -6,10 +6,12 @@ TARGET=main
 
 SOURCES=main.c \
 		src/list.c \
+		src/stack.c \
 		src/str.c
 
 OBJECTS=main.o \
 		list.o \
+		stack.o \
 		str.o
 
 target: $(SOURCES)
