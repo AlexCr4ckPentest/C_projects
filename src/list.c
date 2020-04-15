@@ -88,6 +88,7 @@ void list_pop_back(list_t *list)
 
     list_node_t *node_for_delete = list->head;
     while (node_for_delete->next != NULL) {
+        list->last = node_for_delete;
         node_for_delete = node_for_delete->next;
     }
     free(node_for_delete);
@@ -147,13 +148,6 @@ void* list_at(list_t *list, const size_t index)
     assert_throw_error(list->size != 0, "list_at(): assertation failed: list size is 0!\n", 1);
     assert_throw_error(index < list->size, "list_at(): assertation failed: index out of range!\n", 2);
 
-    if (index == list->size - 1) {
-        return list_last(list);
-    }
-    else if (index == 0) {
-        return list_first(list);
-    }
-
     size_t curr_node_index = 0;
     list_node_t *curr_node = list->head;
     while (curr_node != NULL) {
@@ -211,6 +205,4 @@ void list_reverse(list_t *list)
         curr = next;
     }
     list->head = prev;
-
-    list->first = list->head;
 }
