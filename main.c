@@ -8,7 +8,7 @@
 /* TODO:
  * Make the test-cases for:
  *  1) string
- *  2) list
+ *  2) list (done)
  *  3) stack (done)
 */
 
