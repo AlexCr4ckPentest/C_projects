@@ -19,7 +19,6 @@ typedef struct s_list
 {
     size_t size;
     struct s_list_node *head;
-
     struct s_list_node *last;
     struct s_list_node *first;
 } list_t;
@@ -40,7 +39,7 @@ list_t* list_create(void)
     new_list->head = NULL;
     new_list->last = NULL;
     new_list->first = NULL;
-    
+
     return new_list;
 }
 
@@ -98,7 +97,7 @@ void list_pop_back(list_t *list)
 void list_pop_front(list_t *list)
 {
     assert_throw_error(list->size != 0, "list_pop_front(): assertation failed: list size is 0!\n", 1);
-    
+
     list_node_t *node_for_delete = list->head;
     list->head = list->head->next;
     list->first = list->head;
