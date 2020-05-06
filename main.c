@@ -40,8 +40,7 @@ void list_test_case(void)
     printf("list_test_case(): list created! list size: %ld\n", list_size(list));
 
     list_push_front(list, 100);
-    printf("list_test_case(): pushing %d to front, list size: %ld\n",
-            100, list_size(list));
+    printf("list_test_case(): pushing %d to front, list size: %ld\n", 100, list_size(list));
 
     list_push_back(list, 200);
     printf("list_test_case(): pushing %d to back, list size: %ld\n", 200, list_size(list));
