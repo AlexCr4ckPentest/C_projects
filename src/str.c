@@ -12,10 +12,9 @@ typedef struct string
 static string_t* __str_create(const size_t length)
 {
     string_t *new_string = malloc(sizeof(string_t));
-
     new_string->data = malloc(length * sizeof(char));
-    *(new_string->data) = 0;
 
+    *(new_string->data) = 0;
     new_string->p_end = new_string->data;
     new_string->length = 0;
 
@@ -44,7 +43,7 @@ string_t* str_dupc(const char *str)
     memcpy(dup->data, str, str_len + 1);
     dup->p_end = (dup->data + str_len + 1);
     dup->length = str_len;
-    
+
     return dup;
 }
 
@@ -59,10 +58,8 @@ void str_catc(string_t *dst, const char *src)
     char *new_dst_data = dst->p_end;
 
     while (*new_dst_data++ = *src++);
-
     *new_dst_data = '\0';
     dst->p_end = new_dst_data;
-
     dst->length += strlen(src);
 }
 
@@ -73,7 +70,6 @@ void str_cat(string_t *dst, const string_t *src)
 
     dst->data = (char*) realloc(dst->data, how_much + 1);
     memmove(dst->data + src_len, src->data, src_len + 1);
-
     dst->p_end = (dst->p_end + src_len + 1);
     dst->length += src_len;
 }
@@ -82,7 +78,6 @@ void str_cpyc(string_t *dst, const char *src)
 {
     size_t src_len = strlen(src);
     memcpy(dst->data, src, src_len + 1);
-
     dst->p_end = dst->data + src_len;
     dst->length = src_len;
 }
@@ -91,7 +86,6 @@ void str_cpy(string_t *dst, const string_t *src)
 {
     size_t src_len = src->length;
     memcpy(dst->data, src->data, src_len + 1);
-
     dst->p_end = dst->data + src_len;
     dst->length = src_len;
 }
@@ -102,7 +96,7 @@ uint8_t str_cmpc(const string_t *str_l, const char *str_r)
         return 1;
 
     char *data_str_l = str_l->data;
-    
+
     while (*data_str_l)
         if (*data_str_l++ != *str_r++)
             return 1;
@@ -113,7 +107,7 @@ uint8_t str_cmp(const string_t *str_l, const string_t *str_r)
 {
     if (str_l->length != str_r->length)
         return 1;
-    
+
     char *data_str_l = str_l->data,
          *data_str_r = str_r->data;
 
@@ -137,13 +131,12 @@ size_t str_chr_pos(const string_t *str, const char chr)
 {
     size_t chr_pos = 0;
     char *str_data = str->data;
-
+    
     while (*str_data) {
         if (*str_data++ == chr)
             break;
         chr_pos++;
     }
-
     return chr_pos;
 }
 
