@@ -15,18 +15,18 @@
 void stack_test_case(void)
 {
     stack_t *stack = stack_create();
-    printf("stack_test_case(): stack created!, stack size: %ld\n", stack_size(stack));
+    printf("(%s): stack created!, stack size: %ld\n", __FUNCTION__, stack_size(stack));
 
     stack_push(stack, 100);
-    printf("stack_test_case(): pushing %d, stack size: %ld\n", 100, stack_size(stack));
+    printf("(%s): pushing %d, stack size: %ld\n", __FUNCTION__, 100, stack_size(stack));
 
     stack_push(stack, 555);
-    printf("stack_test_case(): pushing %d, stack size: %ld\n", 500, stack_size(stack));
-    printf("stack_test_case(): stack top: %d\n", (int)stack_top(stack));
+    printf("(%s): pushing %d, stack size: %ld\n", __FUNCTION__, 500, stack_size(stack));
+    printf("(%s): stack top: %d\n", __FUNCTION__, (int)stack_top(stack));
 
     stack_pop(stack);
-    printf("stack_test_case(): pop() called! stack size: %ld\n", stack_size(stack));
-    printf("stack_test_case(): stack top: %d\n", (int)stack_top(stack));
+    printf("(%s): pop() called! stack size: %ld\n", __FUNCTION__, stack_size(stack));
+    printf("(%s): stack top: %d\n", __FUNCTION__, (int)stack_top(stack));
 
     stack_delete(stack);
 }
@@ -34,42 +34,71 @@ void stack_test_case(void)
 void list_test_case(void)
 {
     list_t *list = list_create();
-    printf("list_test_case(): list created! list size: %ld\n", list_size(list));
+    printf("(%s): list created! list size: %ld\n", __FUNCTION__, list_size(list));
 
     list_push_front(list, 100);
-    printf("list_test_case(): pushing %d to front, list size: %ld\n", 100, list_size(list));
+    printf("(%s): pushing %d to front, list size: %ld\n", __FUNCTION__, 100, list_size(list));
 
     list_push_back(list, 200);
-    printf("list_test_case(): pushing %d to back, list size: %ld\n", 200, list_size(list));
-    printf("list_test_case(): [0] = %d, [1] = %d\n", (int)list_at(list, 0), (int)list_at(list, 1));
-    printf("list_test_case(): first = %d, last = %d\n", (int)list_first(list), (int)list_last(list));
+    printf("(%s): pushing %d to back, list size: %ld\n", __FUNCTION__, 200, list_size(list));
+    printf("(%s): [0] = %d, [1] = %d\n", __FUNCTION__, (int)list_at(list, 0), (int)list_at(list, 1));
+    printf("(%s): first = %d, last = %d\n", __FUNCTION__, (int)list_first(list), (int)list_last(list));
 
     list_pop_front(list);
-    printf("list_test_case(): pop front!, list size: %ld\n", list_size(list));
+    printf("(%s): pop front!, list size: %ld\n", __FUNCTION__, list_size(list));
 
     list_push_back(list, 300);
-    printf("list_test_case(): pushing %d to back, list size: %ld\n", 300, list_size(list));
+    printf("(%s): pushing %d to back, list size: %ld\n", __FUNCTION__, 300, list_size(list));
 
     list_pop_back(list);
-    printf("list_test_case(): pop back! list size: %ld\n", list_size(list));
+    printf("(%s): pop back! list size: %ld\n", __FUNCTION__, list_size(list));
 
     list_push_back(list, 400);
-    printf("list_test_case(): pushing %d to back, list size: %ld\n", 400, list_size(list));
-    printf("list_test_case(): [0] = %d, [1] = %d\n", (int)list_at(list, 0), (int)list_at(list, 1));
+    printf("(%s): pushing %d to back, list size: %ld\n", __FUNCTION__, 400, list_size(list));
+    printf("(%s): [0] = %d, [1] = %d\n", __FUNCTION__, (int)list_at(list, 0), (int)list_at(list, 1));
 
     list_reverse(list);
-    printf("list_test_case(): revesing list!\n");
-    printf("list_test_case(): [0] = %d, [1] = %d\n", (int)list_at(list, 0), (int)list_at(list, 1));
+    printf("(%s): revesing list!\n", __FUNCTION__);
+    printf("(%s): [0] = %d, [1] = %d\n", __FUNCTION__, (int)list_at(list, 0), (int)list_at(list, 1));
 
     list_delete(list);
 }
 
-void string_test_case(void)
-{}
+void string_memory_leaks_test_case(void)
+{
+    string_t *str = str_from_c_str("123");
+    str_delete(str);
+
+    str = str_from_c_str("Goodbye world!");
+    str_delete(str);
+
+    str = str_from_c_str("Hello world!");
+    string_t *dup = str_dup(str);
+    str_delete(dup);
+
+    str_delete(str);
+}
+
+void string_concat_test_case()
+{
+    string_t *str_1;
+    string_t *str_2;
+
+    str_1 = str_from_c_str("Hello ");
+    str_2 = str_from_c_str("world!");
+
+    printf("(%s): concating '%s' and '%s'\n", __FUNCTION__, str_to_c_str(str_1), str_to_c_str(str_2));
+    str_cat(str_1, str_2);
+    printf("(%s): result: %s\n", __FUNCTION__, str_to_c_str(str_1));
+
+    str_delete(str_2);
+    str_delete(str_1);
+}
 
 int main(void)
 {
-    stack_test_case();
     list_test_case();
+    stack_test_case();
+    string_concat_test_case();
     return 0;
 }
