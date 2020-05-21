@@ -10,8 +10,11 @@ void str_delete(string_t *str);
 
 string_t* str_from_c_str(const char *str);
 
+/// ---------------------------------------------------
+/// !!! WARNING !!! ALLOCATES MEMORY WITHOUT free() !!!
 string_t* str_dupc(const char *str);
 string_t* str_dup(const string_t *str);
+/// ---------------------------------------------------
 
 void str_catc(string_t *dst, const char *src);
 void str_cat(string_t *dst, const string_t *src);
