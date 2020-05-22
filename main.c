@@ -66,39 +66,48 @@ void list_test_case(void)
 
 void string_memory_leaks_test_case(void)
 {
-    string_t *str = str_from_c_str("123");
-    str_delete(str);
+    string_t str = str_from_c_str("123");
+    str_delete(&str);
 
     str = str_from_c_str("Goodbye world!");
-    str_delete(str);
+    str_delete(&str);
 
     str = str_from_c_str("Hello world!");
-    string_t *dup = str_dup(str);
-    str_delete(dup);
+    string_t dup = str_dup(&str);
+    str_delete(&dup);
 
-    str_delete(str);
+    str_delete(&str);
 }
 
-void string_concat_test_case()
+void string_concat_test_case(void)
 {
-    string_t *str_1;
-    string_t *str_2;
+    string_t str_1;
+    string_t str_2;
 
     str_1 = str_from_c_str("Hello ");
     str_2 = str_from_c_str("world!");
 
-    printf("(%s): concating '%s' and '%s'\n", __FUNCTION__, str_to_c_str(str_1), str_to_c_str(str_2));
-    str_cat(str_1, str_2);
-    printf("(%s): result: %s\n", __FUNCTION__, str_to_c_str(str_1));
+    printf("(%s): concating '%s' and '%s'\n", __FUNCTION__, str_to_c_str(&str_1), str_to_c_str(&str_2));
+    str_cat(&str_1, &str_2);
+    printf("(%s): result: %s\n", __FUNCTION__, str_to_c_str(&str_1));
 
-    str_delete(str_2);
-    str_delete(str_1);
+    str_delete(&str_2);
+    str_delete(&str_1);
+}
+
+void string_substr_test_case(void)
+{
+    string_t str = str_from_c_str("Hello world!");
+    string_t sub = str_substr(&str, 0, 4);
+
+    printf("(%s): base string: %s\n", __FUNCTION__, str_to_c_str(&str));
+    printf("(%s): substring: %s\n", __FUNCTION__, str_to_c_str(&sub));
+
+    str_delete(&sub);
+    str_delete(&str);
 }
 
 int main(void)
 {
-    list_test_case();
-    stack_test_case();
-    string_concat_test_case();
     return 0;
 }
