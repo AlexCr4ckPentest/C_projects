@@ -29,7 +29,7 @@ static string_t __str_substr_create(char *begin, char *end)
     memcpy(new_string.data, begin, diff + 1);
     *(new_string.data + diff + 1) = '\0';
     new_string.p_end = (new_string.data + diff + 1);
-    new_string.length = diff;
+    new_string.length = diff + 1;
 
     return new_string;
 }
