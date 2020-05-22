@@ -1,10 +1,8 @@
 #include "../include/stack.h"
-#include <stdlib.h>
 
-stack_t* stack_create(void)
+inline stack_t* stack_create(void)
 {
-    stack_t *new_stack = list_create();
-    return new_stack;
+    return list_create();
 }
 
 inline void stack_delete(stack_t *stack)
@@ -32,7 +30,7 @@ inline void stack_clear(stack_t *stack)
     list_clear(stack);
 }
 
-inline uint8_t stack_is_empty(stack_t *stack)
+inline bool stack_is_empty(stack_t *stack)
 {
     return list_is_empty(stack);
 }
