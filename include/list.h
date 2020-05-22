@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <stdint.h>
+#include <stdbool.h>
 
 #ifndef _LIST_H_
 #define _LIST_H_
@@ -29,7 +29,7 @@ extern void* list_first(list_t *list);
 
 extern size_t list_size(const list_t *list);
 
-extern uint8_t list_is_empty(const list_t *list);
+extern bool list_is_empty(const list_t *list);
 
 void list_print(list_t *list, const char *format, FILE *out);
 
