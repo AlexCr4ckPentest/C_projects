@@ -4,8 +4,6 @@
 #include <string.h>
 #include <assert.h>
 
-
-
 static string_t __str_create(const size_t length)
 {
     string_t new_string;
