@@ -1,24 +1,35 @@
 #include "../include/str.h"
+#include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
-typedef struct string
+
+
+static string_t __str_create(const size_t length)
 {
-    char *data;     // pointer to C-string
-    char *p_end;    // pointer to end of string
-    size_t length;  // current length of string
-} string_t;
+    string_t new_string;
+    new_string.data = malloc(length * sizeof(char));
+
+    *(new_string.data) = 0;
+    new_string.p_end = new_string.data;
+    new_string.length = 0;
+
+    return new_string;
+}
 
 
 
-static string_t* __str_create(const size_t length)
+static string_t __str_substr_create(char *begin, char *end)
 {
-    string_t *new_string = malloc(sizeof(string_t));
-    new_string->data = malloc(length * sizeof(char));
+    string_t new_string;
+    ptrdiff_t diff = end - begin;
 
-    *(new_string->data) = 0;
-    new_string->p_end = new_string->data;
-    new_string->length = 0;
+    new_string.data = malloc(diff * sizeof(char) + 1);
+    memcpy(new_string.data, begin, diff + 1);
+    *(new_string.data + diff + 1) = '\0';
+    new_string.p_end = (new_string.data + diff + 1);
+    new_string.length = diff;
 
     return new_string;
 }
@@ -28,43 +39,41 @@ static string_t* __str_create(const size_t length)
 void str_delete(string_t *str)
 {
     free(str->data);
-    free(str);
-    str = NULL;
 }
 
 
 
-string_t* str_from_c_str(const char *str)
+string_t str_from_c_str(const char *str)
 {
-    string_t *new_str = __str_create(strlen(str));
-    str_cpyc(new_str, str);
+    string_t new_str = __str_create(strlen(str));
+    str_cpyc(&new_str, str);
     return new_str;
 }
 
 
 
-string_t* str_dupc(const char *str)
+string_t str_dupc(const char *str)
 {
     size_t str_len = strlen(str);
-    string_t *dup = __str_create(str_len);
+    string_t dup = __str_create(str_len);
 
-    memcpy(dup->data, str, str_len + 1);
-    dup->p_end = (dup->data + str_len + 1);
-    dup->length = str_len;
+    memcpy(dup.data, str, str_len + 1);
+    dup.p_end = (dup.data + str_len + 1);
+    dup.length = str_len;
 
     return dup;
 }
 
 
 
-string_t* str_dup(const string_t *str)
+string_t str_dup(string_t *str)
 {
     size_t str_len = str->length;
-    string_t *dup = __str_create(str_len);
+    string_t dup = __str_create(str_len);
 
-    memcpy(dup->data, str->data, str_len + 1);
-    dup->p_end = (dup->data + str_len + 1);
-    dup->length = str_len;
+    memcpy(dup.data, str->data, str_len + 1);
+    dup.p_end = (dup.data + str_len + 1);
+    dup.length = str_len;
 
     return dup;
 }
@@ -84,7 +93,7 @@ void str_catc(string_t *dst, const char *src)
 
 
 
-void str_cat(string_t *dst, const string_t *src)
+void str_cat(string_t *dst, string_t *src)
 {
     size_t src_len = src->length;
     size_t how_much = dst->length + src_len;
@@ -108,7 +117,7 @@ void str_cpyc(string_t *dst, const char *src)
 
 
 
-void str_cpy(string_t *dst, const string_t *src)
+void str_cpy(string_t *dst, string_t *src)
 {
     size_t src_len = src->length;
     memcpy(dst->data, src->data, src_len + 1);
@@ -118,52 +127,70 @@ void str_cpy(string_t *dst, const string_t *src)
 
 
 
-uint8_t str_cmpc(const string_t *str_l, const char *str_r)
+bool str_cmpc(string_t *str_l, const char *str_r)
 {
     if (str_l->length != strlen(str_r))
-        return 1;
+        return false;
 
     char *data_str_l = str_l->data;
 
     while (*data_str_l)
         if (*data_str_l++ != *str_r++)
-            return 1;
-    return 0;
+            return false;
+    return true;
 }
 
 
 
-uint8_t str_cmp(const string_t *str_l, const string_t *str_r)
+bool str_cmp(string_t *str_l, string_t *str_r)
 {
     if (str_l->length != str_r->length)
-        return 1;
+        return false;
 
     char *data_str_l = str_l->data;
     char *data_str_r = str_r->data;
 
     while (*data_str_l)
         if (*data_str_l++ != *data_str_r++)
-            return 1;
-    return 0;
+            return false;
+    return true;
 }
 
 
 
-inline size_t str_length(const string_t *str)
+inline size_t str_length(string_t *str)
 {
     return str->length;
 }
 
 
 
-inline char* str_to_c_str(const string_t *str)
+inline char* str_to_c_str(string_t *str)
 {
     return str->data;
 }
 
 
 
-size_t str_chr_pos(const string_t *str, const char chr)
+char str_at(string_t *str, const size_t pos) 
+{
+    assert(pos <= str->length);
+
+    return (*(str->data + pos));
+}
+
+
+
+char* str_ptr_at(string_t *str, const size_t pos)
+{
+    assert(pos <= str->length);
+
+    return (str->data + pos);
+}
+
+
+
+size_t str_chr_pos(string_t *str, const char chr)
 {
     size_t chr_pos = 0;
     char *str_data = str->data;
@@ -178,14 +205,14 @@ size_t str_chr_pos(const string_t *str, const char chr)
 
 
 
-inline char* str_chr_ptr(const string_t *str, const char chr)
+inline char* str_chr_ptr(string_t *str, const char chr)
 {
     return (str->data + str_chr_pos(str, chr));
 }
 
 
 
-void str_reverse(const string_t *str)
+void str_reverse(string_t *str)
 {
     char tmp;
     for (int i = 0,j = str->length - 1; i < j; i++,j--) {
@@ -193,4 +220,16 @@ void str_reverse(const string_t *str)
         str->data[i] = str->data[j];
         str->data[j] = tmp;
     }
+}
+
+
+
+string_t str_substr(string_t *str, const size_t begin, const size_t end) 
+{
+    assert(begin <= end);
+
+    char *ptr_at_begin = str_ptr_at(str, begin);
+    char *ptr_at_end = str_ptr_at(str, end);
+
+    return __str_substr_create(ptr_at_begin, ptr_at_end);
 }
