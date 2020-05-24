@@ -87,7 +87,7 @@ inline int get_max_value(int *restrict arr_p, const size_t size)
 
 
 
-uint32_t single_count_if(int *arr_p, const size_t size, predicate pred)
+uint32_t single_count_if(int *restrict arr_p, const size_t size, predicate pred)
 {
     uint32_t counter = 0;
 
@@ -100,7 +100,7 @@ uint32_t single_count_if(int *arr_p, const size_t size, predicate pred)
 
 
 
-uint32_t single_count_if_not(int *arr_p, const size_t size, predicate pred)
+uint32_t single_count_if_not(int *restrict arr_p, const size_t size, predicate pred)
 {
     uint32_t counter = 0;
 
@@ -113,7 +113,7 @@ uint32_t single_count_if_not(int *arr_p, const size_t size, predicate pred)
 
 
 
-uint32_t double_count_if(int *arr_p, const size_t size, comparator_int comp)
+uint32_t double_count_if(int *restrict arr_p, const size_t size, comparator_int comp)
 {
     uint32_t counter = 0;
 
@@ -129,7 +129,7 @@ uint32_t double_count_if(int *arr_p, const size_t size, comparator_int comp)
 
 
 
-uint32_t double_count_if_not(int *arr_p, const size_t size, comparator_int comp)
+uint32_t double_count_if_not(int *restrict arr_p, const size_t size, comparator_int comp)
 {
     uint32_t counter = 0;
 
@@ -145,7 +145,7 @@ uint32_t double_count_if_not(int *arr_p, const size_t size, comparator_int comp)
 
 
 
-uint32_t summ_if(int *arr_p, const size_t size, predicate pred)
+uint32_t summ_if(int *restrict arr_p, const size_t size, predicate pred)
 {
     uint32_t summ = 0;
 
@@ -158,7 +158,7 @@ uint32_t summ_if(int *arr_p, const size_t size, predicate pred)
 
 
 
-uint32_t summ_all(int *arr_p, const size_t size)
+uint32_t summ_all(int *restrict arr_p, const size_t size)
 {
     uint32_t summ = 0;
 
@@ -173,6 +173,14 @@ uint32_t summ_all(int *arr_p, const size_t size)
 inline void copy(int *arr_dst, int *arr_src, const size_t size)
 {
     for (size_t i = 0; i < size; i++)
+        arr_dst[i] = arr_src[i];
+}
+
+
+
+inline void reverse_copy(int *arr_dst, int *arr_src, const size_t size, predicate pred)
+{
+    for (size_t i = size - 1; i != 0; i++)
         arr_dst[i] = arr_src[i];
 }
 
@@ -200,4 +208,29 @@ uint32_t copy_if_not(int *arr_dst, int *arr_src, const size_t size, predicate pr
             arr_dst[i] = arr_src[i];
 
     return success_copied;
+}
+
+
+uint32_t reverse_copy_if(int *arr_dst, int *arr_src, const size_t size, predicate pred)
+{
+    uint32_t success_count = 0;
+
+    for (size_t i = size - 1; i != 0; i++)
+        if (pred(arr_src[i]))
+            arr_dst[i] = arr_src[i];
+
+    return success_count;
+}
+
+
+
+uint32_t reverse_copy_if_not(int *arr_dst, int *arr_src, const size_t size, predicate pred)
+{
+    uint32_t success_count = 0;
+
+    for (size_t i = size - 1; i != 0; i++)
+        if (!pred(arr_src[i]))
+            arr_dst[i] = arr_src[i];
+
+    return success_count;
 }
