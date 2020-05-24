@@ -37,6 +37,7 @@ static string_t __str_substr_create(char *begin, char *end)
 void str_delete(string_t *str)
 {
     free(str->data);
+    str->data = NULL;
 }
 
 
