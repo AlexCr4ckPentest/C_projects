@@ -171,6 +171,20 @@ inline char* str_to_c_str(string_t *str)
 
 
 
+inline double str_to_f(string_t *str) 
+{
+    return atof(str->data);
+}
+
+
+
+inline int str_to_i(string_t *str)
+{
+    return (int)(str_to_f(str));
+}
+
+
+
 char str_at(string_t *str, const size_t pos) 
 {
     assert(pos <= str->length);

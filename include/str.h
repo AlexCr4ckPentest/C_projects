@@ -35,6 +35,8 @@ bool str_cmp(string_t *str_l, string_t *str_r);
 extern size_t str_length(string_t *str);
 
 extern char* str_to_c_str(string_t *str);
+extern double str_to_f(string_t *str);
+extern int str_to_i(string_t *str);
 
 char str_at(string_t *str, const size_t pos);
 char* str_ptr_at(string_t *str, const size_t pos);
