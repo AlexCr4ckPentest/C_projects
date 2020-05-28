@@ -107,6 +107,33 @@ void string_substr_test_case(void)
     str_delete(&str);
 }
 
+void string_find_test_case(void)
+{
+    string_t str = str_from_c_str("Hello world");
+
+    char c_1 = 'w';
+    char c_2 = 'x';
+
+    char *p_1 = str_chr_ptr(&str, c_1);
+    char *p_2 = str_chr_ptr(&str, c_2);
+
+    if (p_1 != NULL) {
+        printf("(%s): char '%c' was found in '%s'\n", __FUNCTION__, c_1, p_1);
+    }
+    else {
+        printf("(%s): char '%c' was not found in string '%s'\n", __FUNCTION__, c_1, str_to_c_str(&str));
+    }
+
+    if (p_2 != NULL) {
+        printf("(%s): char '%c' was found in '%s'\n", __FUNCTION__, c_2, p_2);
+    }
+    else {
+        printf("(%s): char '%c' was not found in string '%s'\n", __FUNCTION__, c_2, str_to_c_str(&str));
+    }
+
+    str_delete(&str);
+}
+
 int main(void)
 {
     return 0;
