@@ -220,7 +220,8 @@ size_t str_chr_pos(string_t *str, const char chr)
 
 inline char* str_chr_ptr(string_t *str, const char chr)
 {
-    return (str->data + str_chr_pos(str, chr));
+    char *chr_ptr = (str->data + str_chr_pos(str, chr));
+    return ((*chr_ptr) == '\0' ? NULL : chr_ptr);
 }
 
 
