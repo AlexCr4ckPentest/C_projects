@@ -164,13 +164,16 @@ void* list_at(list_t *list, const size_t index)
 
     size_t curr_node_index = 0;
     list_node_t *curr_node = list->head;
+    void *ret_data = NULL;
+
     while (curr_node != NULL) {
         if (index == curr_node_index) {
-            return curr_node->data;
+            ret_data = curr_node->data;
         }
         curr_node = curr_node->next;
         curr_node_index++;
     }
+    return ret_data;
 }
 
 
