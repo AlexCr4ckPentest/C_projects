@@ -185,19 +185,17 @@ inline int str_to_i(string_t *str)
 
 
 
-char str_at(string_t *str, const size_t pos) 
+inline char str_at(string_t *str, const size_t pos) 
 {
     assert(pos <= str->length);
-
     return (*(str->data + pos));
 }
 
 
 
-char* str_ptr_at(string_t *str, const size_t pos)
+inline char* str_ptr_at(string_t *str, const size_t pos)
 {
     assert(pos <= str->length);
-
     return (str->data + pos);
 }
 
