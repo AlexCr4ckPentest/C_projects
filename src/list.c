@@ -12,8 +12,8 @@ typedef struct s_list
 {
     size_t size;
     struct s_list_node *head;
-    struct s_list_node *last;
     struct s_list_node *first;
+    struct s_list_node *last;
 } list_t;
 
 
@@ -34,8 +34,8 @@ list_t* list_create(void)
 
     new_list->size = 0;
     new_list->head = NULL;
-    new_list->last = NULL;
-    new_list->first = NULL;
+    new_list->first = new_list->head;
+    new_list->last = new_list->head;
 
     return new_list;
 }
@@ -68,12 +68,15 @@ void list_push_back(list_t *list, void *data)
     }
     else {
         list_node_t *last_node = list->head;
+
         while (last_node->next != NULL) {
             last_node = last_node->next;
         }
+
         last_node->next = list_node_create(data, NULL);
         list->last = last_node->next;
     }
+
     list->size++;
 }
 
@@ -93,10 +96,12 @@ void list_pop_back(list_t *list)
     assert(list->size != 0 && "list is empty!\n");
 
     list_node_t *node_for_delete = list->head;
+    
     while (node_for_delete->next != NULL) {
         list->last = node_for_delete;
         node_for_delete = node_for_delete->next;
     }
+
     free(node_for_delete);
     list->size--;
 }
@@ -118,19 +123,24 @@ void list_pop_front(list_t *list)
 
 void list_remove_at(list_t *list, const size_t index)
 {
-    assert(list->size != 0 && "list is empty!\n");
-    assert(index < list->size && "index out of range!\n");
+    assert((index < list->size) || (index >= list->size) && "index out of range!\n");
 
     if (index == 0) {
         list_pop_front(list);
     }
     else {
         list_node_t *prev_node = list->head;
+        
         for (size_t i = 0; i < index - 1; i++) {
             prev_node = prev_node->next;
         }
+        if (index == list->size - 1) {
+            list->last = prev_node; 
+        }
+
         list_node_t *node_for_delete = prev_node->next;
         prev_node->next = node_for_delete->next;
+
         free(node_for_delete);
         list->size--;
     }
@@ -140,7 +150,7 @@ void list_remove_at(list_t *list, const size_t index)
 
 void list_insert(list_t *list, void *data, const size_t index)
 {
-    assert(index < list->size && "index out of range!\n");
+    assert((index < list->size) || (index >= list->size) && "index out of range!\n");
 
     if (index == 0) {
         list_push_front(list, data);
@@ -159,8 +169,7 @@ void list_insert(list_t *list, void *data, const size_t index)
 
 void* list_at(list_t *list, const size_t index)
 {
-    assert(list->size != 0 && "list is empty!\n");
-    assert(index < list->size && "index out of range!\n");
+    assert((index < list->size) || (index >= list->size) && "index out of range!\n");
 
     size_t curr_node_index = 0;
     list_node_t *curr_node = list->head;
@@ -224,8 +233,8 @@ void list_reverse(list_t *list)
     assert(list->size != 0);
 
     list_node_t *prev = NULL;
-    list_node_t *curr = list->head;
     list_node_t *next = NULL;
+    list_node_t *curr = list->head;
 
     while (curr != NULL) {
         next = curr->next;
@@ -233,5 +242,8 @@ void list_reverse(list_t *list)
         prev = curr;
         curr = next;
     }
+
+    list->last = list->head;
     list->head = prev;
+    list->first = list->head;
 }
