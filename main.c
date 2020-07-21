@@ -20,7 +20,7 @@ void stack_test_case(void)
     stack_push(stack, 100);
     printf("(%s): pushing %d, stack size: %ld\n", __FUNCTION__, 100, stack_size(stack));
 
-    stack_push(stack, 555);
+    stack_push(stack, 500);
     printf("(%s): pushing %d, stack size: %ld\n", __FUNCTION__, 500, stack_size(stack));
     printf("(%s): stack top: %d\n", __FUNCTION__, (int)stack_top(stack));
 
@@ -136,5 +136,6 @@ void string_find_test_case(void)
 
 int main(void)
 {
+    stack_test_case();
     return 0;
 }
